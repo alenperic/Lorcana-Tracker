@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorcana Lore Counter</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://sm.ign.com/ign_ap/gallery/d/disney-lor/disney-lorcana-the-first-chapter-release-images_w8kp.png');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .header img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+            vertical-align: middle;
+        }
+        .counters {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+        }
+        .counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .blue-counter {
+            background-color: rgba(70, 130, 180, 0.8); /* Blue background with opacity */
+        }
+        .red-counter {
+            background-color: rgba(255, 0, 0, 0.8); /* Red background with opacity */
+        }
+        .button {
+            font-size: 20px;
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #ADD8E6; /* Light blue background */
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .button:active {
+            background-color: #87CEEB;
+        }
+        .count {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+        .logo {
+            padding: 20px;
+            position: absolute;
+            bottom: 20px;
+        }
+        .logo img {
+            max-width: 200px;
+            height: auto;
+        }
+        .username {
+            margin-top: 10px;
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .reset-button {
+            font-size: 20px;
+            margin: 20px;
+            padding: 10px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .reset-button img {
+            max-width: 30px;
+            height: auto;
+        }
+        .reset-button:active {
+            background-color: #45a049;
+        }
+
+        /* Dice Styles */
+        .game {
+            position: relative;
+            width: auto;
+            height: 100%; 
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .dice {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 1s; 
+            cursor: pointer;
+        }
+
+        .dot {
+            position: absolute;
+            width: 5px;  /* Adjusted size */
+            height: 5px;  /* Adjusted size */
+            margin: -2.5px 5px 5px -2.5px;  /* Adjusted margin */
+            border-radius: 50%;
+            background-color: white;  /* White dots */
+        }
+
+        .side {
+            position: absolute;
+            background-color: #0A1F44;  /* Dark navy blue */
+            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+            border: 1px solid #e5e5e5;
+            text-align: center;
+            line-height: 2em;
+        }
+
+        .side:nth-child(1) {
+            transform: translateZ(25px); 
+        }
+
+        .side:nth-child(6) {
+            transform: rotateY(90deg) translateZ(25px); 
+        }
+
+        .side:nth-child(3) {
+            transform: rotateY(-90deg) translateZ(25px); 
+        }
+
+        .side:nth-child(4) {
+            transform: rotateX(90deg) translateZ(25px); 
+        }
+
+        .side:nth-child(5) {
+            transform: rotateX(-90deg) translateZ(25px); 
+        }
+
+        .side:nth-child(2) {
+            transform: rotateY(-180deg) translateZ(25px); 
+        }
+
+        .show-1 {
+            transform: rotateX(720deg) rotateZ(-720deg); 
+        }
+
+        .show-6 {
+            transform: rotateX(-900deg) rotateZ(1080deg); 
+        }
+
+        .show-3 {
+            transform: rotateY(-450deg) rotateZ(-1440deg); 
+        }
+
+        .show-4 {
+            transform: rotateY(810deg) rotateZ(720deg); 
+        }
+
+        .show-5 {
+            transform: rotateX(-810deg) rotateZ(-1080deg); 
+        }
+
+        .show-2 {
+            transform: rotateX(450deg) rotateZ(-720deg); 
+        }
+
+        .two-1, .three-1, .four-1, .five-1, .six-1 {
+            top: 20%;
+            left: 20%; 
+        }
+
+        .four-3, .five-3, .six-4 {
+            top: 20%;
+            left: 80%; 
+        }
+
+        .one-1, .three-2, .five-5 {
+            top: 50%;
+            left: 50%; 
+        }
+
+        .four-2, .five-2, .six-3 {
+            top: 80%;
+            left: 20%; 
+        }
+
+        .two-2, .three-3, .four-4, .five-4, .six-6 {
+            top: 80%;
+            left: 80%; 
+        }
+
+        .six-2 {
+            top: 50%;
+            left: 20%; 
+        }
+
+        .six-5 {
+            top: 50%;
+            left: 80%; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://github.com/alenperic" target="_blank">
+            <img src="https://avatars.githubusercontent.com/u/20021065?v=4" alt="GitHub Profile Icon" />
+            alenperic
+        </a>
+    </div>
+    <div class="counters">
+        <div class="counter blue-counter">
+            <input type="text" id="leftUsername" class="username" placeholder="Player 1">
+            <button class="button" onclick="increment('leftCount', 'leftUsername')">+</button>
+            <div id="leftCount" class="count">0</div>
+            <button class="button" onclick="decrement('leftCount')">-</button>
+        </div>
+        <div>
+            <button class="reset-button" onclick="resetCounters()">
+                <img src="https://clipart-library.com/image_gallery/548520.png" alt="Reset Icon">
+            </button>
+            <div class="game">
+                <div class="container">
+                    <div id='dice1' class="dice" onclick="rollDice()">
+                        <div id="dice-one-side-one" class='side one'>
+                            <div class="dot one-1"></div>
+                        </div>
+                        <div id="dice-one-side-two" class='side two'>
+                            <div class="dot two-1"></div>
+                            <div class="dot two-2"></div>
+                        </div>
+                        <div id="dice-one-side-three" class='side three'>
+                            <div class="dot three-1"></div>
+                            <div class="dot three-2"></div>
+                            <div class="dot three-3"></div>
+                        </div>
+                        <div id="dice-one-side-four" class='side four'>
+                            <div class="dot four-1"></div>
+                            <div class="dot four-2"></div>
+                            <div class="dot four-3"></div>
+                            <div class="dot four-4"></div>
+                        </div>
+                        <div id="dice-one-side-five" class='side five'>
+                            <div class="dot five-1"></div>
+                            <div class="dot five-2"></div>
+                            <div class="dot five-3"></div>
+                            <div class="dot five-4"></div>
+                            <div class="dot five-5"></div>
+                        </div>
+                        <div id="dice-one-side-six" class='side six'>
+                            <div class="dot six-1"></div>
+                            <div class="dot six-2"></div>
+                            <div class="dot six-3"></div>
+                            <div class="dot six-4"></div>
+                            <div class="dot six-5"></div>
+                            <div class="dot six-6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="counter red-counter">
+            <input type="text" id="rightUsername" class="username" placeholder="Player 2">
+            <button class="button" onclick="increment('rightCount', 'rightUsername')">+</button>
+            <div id="rightCount" class="count">0</div>
+            <button class="button" onclick="decrement('rightCount')">-</button>
+        </div>
+    </div>
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/08/Disney_Lorcana_Logo.png" alt="Disney Lorcana Logo">
+    </div>
+
+    <script>
+        function increment(id, usernameId) {
+            const countElement = document.getElementById(id);
+            const usernameElement = document.getElementById(usernameId);
+            let count = parseInt(countElement.textContent);
+            count++;
+            countElement.textContent = count;
+            checkWinner(count, usernameElement.value || (id === 'leftCount' ? 'Player 1' : 'Player 2'));
+        }
+
+        function decrement(id) {
+            const countElement = document.getElementById(id);
+            let count = parseInt(countElement.textContent);
+            if (count > 0) {
+                count--;
+                countElement.textContent = count;
+            }
+        }
+
+        function resetCounters() {
+            document.getElementById('leftCount').textContent = 0;
+            document.getElementById('rightCount').textContent = 0;
+        }
+
+        function checkWinner(count, player) {
+            if (count >= 20) {
+                alert(player + ' has won!');
+            }
+        }
+
+        function rollDice() {
+            const dice = document.getElementById('dice1');
+            const faces = ['show-1', 'show-2', 'show-3', 'show-4', 'show-5', 'show-6'];
+            const randomFace = Math.floor(Math.random() * 6) + 1;
+            const minSpins = 4;
+            const maxSpins = 8;
+            const extraSpins = Math.floor(Math.random() * (maxSpins - minSpins + 1) + minSpins) * 360;
+
+            dice.className = 'dice'; // Reset dice class
+            setTimeout(() => {
+                dice.classList.add(faces[randomFace - 1]);
+            }, 20);
+        }
+    </script>
+</body>
+</html>
