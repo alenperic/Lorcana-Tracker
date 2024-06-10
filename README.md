@@ -1,5 +1,5 @@
 # Lorcana-Tracker
-A web-based counter for the Lorcana TCG game, featuring interactive lore counters and a 3D animated dice roller. This project helps players keep track of their lore in the game with a clean, user-friendly interface. Includes features like player name inputs, a reset button, and an engaging 3D dice roll animation for added fun.
+A web-based counter for the [https://www.disneylorcana.com](Lorcana TCG game), featuring interactive lore counters and a 3D animated dice roller. This project helps players keep track of their lore in the game with a clean, user-friendly interface. Includes features like player name inputs, a reset button, and an engaging 3D dice roll animation for added fun.
 
 #### Features:
 - **Interactive Lore Counters**: Easily increment or decrement lore counts for both players.
